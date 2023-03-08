@@ -31,14 +31,14 @@ def help(update, context):
 def attack(update, context):
 
     reply_keyboard = [['/cancel']]
-    update.message.reply_text(
+    ip = update.message.reply_text(
         '¿Cuál es la dirección IP de su víctima? (Escriba "/cancel" para cancelar la petición)',
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
     )
 
     return IP
   
-    update.message.reply_text2(
+    gateway = update.message.reply_text(
         '¿Cuál es la Gateway de su víctima? (Escriba "/cancel" para cancelar la petición)',
         reply_markup2=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
     )
@@ -46,10 +46,6 @@ def attack(update, context):
     return GATEWAY
 
 def set_ip(update, context):
-
-    ip = update.message.text
-    
-    gateway = update.message.reply_text2
 
     logger.info(f'ARP spoofing iniciado para {ip}')
 
