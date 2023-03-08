@@ -1,9 +1,12 @@
 import logging
 import os
 
+from telegram import ReplyKeyboardMarkup
+from telegram.ext import CommandHandler, ConversationHandler, MessageHandler, filters
+
 a = 1
 
-from telegram.ext import Updater, CommandHandler, MessageHandler, filters
+IP = range(1)
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
@@ -26,13 +29,37 @@ def help(update, context):
     update.message.reply_text('/attack')
 
 def attack(update, context):
-    """Comando /attack"""
 
-    update.message.reply_text('Introduzca la dirección IP de su victima...')
+    reply_keyboard = [['/cancel']]
+    update.message.reply_text(
+        '¿Cuál es la dirección IP de su víctima? (Escriba "/cancel" para cancelar la petición)',
+        reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
+    )
 
-    while a > 10:
-        
-        print("Esto es una prueba")
+    return IP
+
+def set_ip(update, context):
+
+    ip = update.message.text
+
+    # Hacemos lo que necesites con la dirección IP
+    # ...
+
+    return ConversationHandler.END
+
+def cancel(update, context):
+
+    update.message.reply_text('Operación cancelada')
+
+    return ConversationHandler.END
+
+conv_handler = ConversationHandler(
+    entry_points=[CommandHandler('attack', attack)],
+    states={
+        IP: [MessageHandler(filters.text & ~filters.command, set_ip)]
+    },
+    fallbacks=[MessageHandler(filters.regex('^Cancelar$'), cancel)]
+)
 
 def main():
     """Se inicia el bot"""
@@ -48,8 +75,5 @@ def main():
 
     updater.idle()
 
-
-
 if __name__ == '__main__':
     main()
-
