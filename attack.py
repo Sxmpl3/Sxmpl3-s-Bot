@@ -42,9 +42,9 @@ def attack(update, context):
 
     return IP
   
-  update.message.reply_text(
+  update.message.reply_text2(
         '¿Cuál es la Gateway de su víctima? (Escriba "/cancel" para cancelar la petición)',
-        reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
+        reply_markup2=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
     )
   
     return GATEWAY
