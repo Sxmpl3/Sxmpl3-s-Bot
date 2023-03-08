@@ -7,6 +7,8 @@ from scapy.all import ARP, Ether, send
 
 a = 1
 
+ipg = "192.168.75.1"
+
 IP = range(1)
 
 GATEWAY = range(1)
@@ -46,7 +48,7 @@ def set_ip(update, context):
     logger.info(f'ARP spoofing iniciado para {ip}')
 
     target_ip = ip
-    gateway_ip = "192.168.75.1"
+    gateway_ip = ipg
 
     try:
         target_mac = ARP().hwsrc
