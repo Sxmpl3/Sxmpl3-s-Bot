@@ -7,7 +7,7 @@ from scapy.all import ARP, Ether, send
 
 a = 1
 
-ipg = "192.168.75.1"
+ipg = '192.168.75.1'
 
 IP = range(1)
 
