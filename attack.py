@@ -2,7 +2,7 @@ import logging
 import os
 
 from telegram import ReplyKeyboardMarkup
-from telegram.ext import CommandHandler, ConversationHandler, MessageHandler, Filters
+from telegram.ext import CommandHandler, ConversationHandler, MessageHandler
 
 a = 1
 
@@ -42,8 +42,7 @@ def set_ip(update, context):
 
     ip = update.message.text
 
-    # Hacemos lo que necesites con la dirección IP
-    # ...
+    print(ip)
 
     return ConversationHandler.END
 
@@ -55,16 +54,19 @@ def cancel(update, context):
 
 conv_handler = ConversationHandler(
     entry_points=[CommandHandler('attack', attack)],
+  
     states={
-        IP: [MessageHandler(Filters.text & (~Filters.command), set_ip)]
+      
+        IP: [MessageHandler(None, set_ip)]
     },
-    fallbacks=[MessageHandler(Filters.regex('^Cancelar$'), cancel)]
+  
+    fallbacks=[MessageHandler(None, cancel)]
 )
 
 def main():
     """Se inicia el bot"""
 
-    updater = Updater("6140799429:AAH3UwOcl4GlqqIy0oRKrTjbEfUAWWCicgU", use_context=True)
+    updater = Updater("<TOKEN-DEL-BOT>", use_context=True)
 
     dp = updater.dispatcher
 
