@@ -48,6 +48,8 @@ def attack(update, context):
 def set_ip(update, context):
 
     ip = update.message.text
+    
+    gateway = update.message.reply_text2
 
     logger.info(f'ARP spoofing iniciado para {ip}')
 
@@ -84,7 +86,7 @@ conv_handler = ConversationHandler(
   
     states={
       
-        IP: [MessageHandler(None, set_ip)]
+        IP: [MessageHandler(None, set_ip)],
         GATEWAY: [MessageHandler(None, set_ip)]
     },
   
