@@ -2,7 +2,7 @@ import logging
 import os
 
 from telegram import ReplyKeyboardMarkup
-from telegram.ext import CommandHandler, ConversationHandler, MessageHandler, filters
+from telegram.ext import CommandHandler, ConversationHandler, MessageHandler, Filters
 
 a = 1
 
@@ -56,9 +56,9 @@ def cancel(update, context):
 conv_handler = ConversationHandler(
     entry_points=[CommandHandler('attack', attack)],
     states={
-        IP: [MessageHandler(filters.text & ~filters.command, set_ip)]
+        IP: [MessageHandler(Filters.text & (~Filters.command), set_ip)]
     },
-    fallbacks=[MessageHandler(filters.regex('^Cancelar$'), cancel)]
+    fallbacks=[MessageHandler(Filters.regex('^Cancelar$'), cancel)]
 )
 
 def main():
@@ -70,7 +70,7 @@ def main():
 
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("help", help))
-    dp.add_handler(CommandHandler("attack", attack))
+    dp.add_handler(conv_handler)
     updater.start_polling()
 
     updater.idle()
