@@ -26,11 +26,7 @@ def start(update, context):
 def help(update, context):
     """Comando /help"""
 
-    update.message.reply_text('Los comandos disponibles son los siguientes:')
-    update.message.reply_text('')
-    update.message.reply_text('/start')
-    update.message.reply_text('/help')
-    update.message.reply_text('/attack')
+    update.message.reply_text('Use el comando /attack para realizar el ataque')
 
 def attack(update, context):
 
@@ -42,7 +38,7 @@ def attack(update, context):
 
     return IP
   
-  update.message.reply_text2(
+    update.message.reply_text2(
         '¿Cuál es la Gateway de su víctima? (Escriba "/cancel" para cancelar la petición)',
         reply_markup2=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
     )
