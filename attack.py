@@ -46,7 +46,7 @@ def set_ip(update, context):
     logger.info(f'ARP spoofing iniciado para {ip}')
 
     target_ip = ip
-    gateway_ip = 192.168.75.1
+    gateway_ip = "192.168.75.1"
 
     try:
         target_mac = ARP().hwsrc
