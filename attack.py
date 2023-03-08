@@ -5,7 +5,7 @@ import time
 
 from telegram import ReplyKeyboardMarkup
 from telegram.ext import CommandHandler, ConversationHandler, MessageHandler, Updater
-from scapy.all import ARP, Ether, send
+from scapy.all import ARP, Ether, send, srp
 
 a = 1
 
