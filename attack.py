@@ -9,7 +9,7 @@ from scapy.all import ARP, Ether, send, srp
 
 a = 1
 
-IP, MAC = range(4)
+IP, MAC = range(2)
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
