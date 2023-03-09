@@ -32,32 +32,29 @@ def help(update, context):
     update.message.reply_text('/attack')
 
 def attack(update, context):
-    """Realiza ARP Spoofing y DoS"""
 
     reply_keyboard = [['/cancel']]
     update.message.reply_text(
-        '¿Cuál es la dirección IP de su víctima?
+        '¿Cuál es la dirección IP de su víctima?',
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
     )
 
     return IP
   
-def set_mac_victima(update, context):
-    """Recibe la MAC de la víctima"""
+def mac_victima(update, context):
 
     context.user_data['mac_victima'] = update.message.text
 
     reply_keyboard = [['/cancel']]
     update.message.reply_text(
-        '¿Cuál es la dirección IP de su gateway? (Escriba "/cancel" para cancelar la petición)',
+        '¿Cuál es la MAC de su víctima?',
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
     )
 
     return MAC
 
 
-def set_ip(update, context):
-    """Recibe la IP de la víctima"""
+def ipattack(update, context):
 
     ip = update.message.text
 
