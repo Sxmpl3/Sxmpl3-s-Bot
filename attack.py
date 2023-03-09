@@ -7,8 +7,6 @@ from telegram import ReplyKeyboardMarkup
 from telegram.ext import CommandHandler, ConversationHandler, MessageHandler, Updater
 from scapy.all import ARP, Ether, send
 
-a = 1
-
 IP = range(1)
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -25,7 +23,7 @@ def help(update, context):
 
     update.message.reply_text('Use /attack para realizar ARP Spoofing')
 
-def attack(update, context):
+def target_ip(update, context):
 
     reply_keyboard = [['/cancel']]
     update.message.reply_text(
@@ -35,7 +33,7 @@ def attack(update, context):
 
     return IP
 
-def set_ip(update, context):
+def arp_spoofing(update, context):
 
     ip = update.message.text
 
@@ -73,10 +71,10 @@ def cancel(update, context):
 
 
 conv_handler = ConversationHandler(
-    entry_points=[CommandHandler('attack', attack)],
+    entry_points=[CommandHandler('attack', target_ip)],
 
     states={
-        IP: [MessageHandler(None, set_ip)]
+        IP: [MessageHandler(None, arp_spoofing)]
     },
 
     fallbacks=[MessageHandler(None, cancel)]
