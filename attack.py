@@ -81,7 +81,12 @@ def ipattack(update, context):
 
     return ConversationHandler.END
 
+def cancel(update, context):
+  
+    update.message.reply_text('Operación cancelada')
 
+    return ConversationHandler.END
+  
 def main():
 
     updater = Updater("6140799429:AAH3UwOcl4GlqqIy0oRKrTjbEfUAWWCicgU", use_context=True)
