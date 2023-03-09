@@ -15,13 +15,11 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 def start(update, context):
-    """Comando /start"""
 
     update.message.reply_text('Hola, usa /help para ver los comandos disponibles')
 
 
 def help(update, context):
-    """Comando /help"""
 
     update.message.reply_text('Los comandos disponibles son los siguientes:')
     update.message.reply_text('')
@@ -56,7 +54,6 @@ def ipattack(update, context):
 
     ip = update.message.text
 
-    # Realizar ARP Spoofing
     gateway_ip = "192.168.75.1"
     gateway_mac = "00:50:56:C0:00:08"
     
@@ -86,14 +83,22 @@ def ipattack(update, context):
 
 
 def main():
-    """Se inicia el bot"""
 
-    updater = Updater("6140799429:AAH3UwOcl4GlqqIy0oRKrTjbEfUAWWCicgU", use_context=True)
+    updater = Updater("TOKEN", use_context=True)
 
     dp = updater.dispatcher
 
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("help", help))
+    conv_handler = ConversationHandler(
+        entry_points=[CommandHandler('attack', attack)],
+        states={
+            IP: [MessageHandler(None, mac_victima)],
+            MAC: [MessageHandler(None, ipattack)],
+        },
+        fallbacks=[CommandHandler('cancel', cancel)],
+        allow_reentry=True
+    )
     dp.add_handler(conv_handler)
     updater.start_polling()
 
@@ -101,3 +106,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+    
+# By Sxmpl3.
