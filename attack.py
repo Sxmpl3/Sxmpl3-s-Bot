@@ -85,7 +85,7 @@ def main():
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler('attack', attack)],
         states={
-            IP: [MessageHandler(None, mac_victima)],
+            IP: [MessageHandler(None, IP)],
         },
         fallbacks=[CommandHandler('cancel', cancel)],
         allow_reentry=True
