@@ -86,7 +86,7 @@ conv_handler = ConversationHandler(
 
 def main():
 
-    updater = Updater("6140799429:AAH3UwOcl4GlqqIy0oRKrTjbEfUAWWCicgU", use_context=True)
+    updater = Updater("tutoken", use_context=True)
 
     up = updater.dispatcher
 
