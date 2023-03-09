@@ -1,6 +1,6 @@
 # Sxmpl3's Bot
 
-Script realizado en python, conectado a un bot de Telegram de PRUEBA junto a su correspondiente token
+Script realizado en python, permite realizar ataques DoS y ARP Spoofing en redes LAN
 
 # ARP Spoofing y DoS
 
