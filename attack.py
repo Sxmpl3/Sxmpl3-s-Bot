@@ -37,7 +37,7 @@ def attack(update, context):
 
     return IP
 
-def ipattack(update, context):
+def set_ip(update, context):
 
     ip = update.message.text
 
