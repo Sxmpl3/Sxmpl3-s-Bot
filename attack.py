@@ -88,11 +88,11 @@ def main():
 
     updater = Updater("6140799429:AAH3UwOcl4GlqqIy0oRKrTjbEfUAWWCicgU", use_context=True)
 
-    dp = updater.dispatcher
+    up = updater.dispatcher
 
-    dp.add_handler(CommandHandler("start", start))
-    dp.add_handler(CommandHandler("help", help))
-    dp.add_handler(conv_handler)
+    up.add_handler(CommandHandler("start", start))
+    up.add_handler(CommandHandler("help", help))
+    up.add_handler(conv_handler)
     updater.start_polling()
 
     updater.idle()
