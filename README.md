@@ -1,4 +1,4 @@
-# ARP Spoofing (Telegram bot)
+# Sxmpl3's Bot
 
 Script realizado en python, conectado a un bot de Telegram de PRUEBA junto a su correspondiente token
 
