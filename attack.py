@@ -23,11 +23,7 @@ def start(update, context):
 
 def help(update, context):
 
-    update.message.reply_text('Los comandos disponibles son los siguientes:')
-    update.message.reply_text('')
-    update.message.reply_text('/start')
-    update.message.reply_text('/help')
-    update.message.reply_text('/attack')
+    update.message.reply_text('Use /attack para realizar ARP Spoofing')
 
 def attack(update, context):
 
