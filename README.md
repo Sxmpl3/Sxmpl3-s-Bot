@@ -2,9 +2,9 @@
 
 Script realizado en python, conectado a un bot de Telegram de PRUEBA junto a su correspondiente token
 
-# ARP Spoofing
+# ARP Spoofing y DoS
 
-Es posible realizar ARP Spoofing usando el comando /attack, antes de nada deberemos de cambiar el valor de las siguientes variables:
+Es posible realizar ARP Spoofing y DoS usando el comando /attack, antes de nada deberemos de cambiar el valor de las siguientes variables:
 
 
 ```
