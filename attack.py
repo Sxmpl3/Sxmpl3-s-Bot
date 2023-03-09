@@ -9,9 +9,9 @@ from scapy.all import ARP, Ether, send, srp
 
 IP = range(1)
 
-g_ip = "192.168.75.1"
-g_mac = "00:50:56:F6:D3:5A"
-t_mac = "00:0C:29:14:84:48"
+g_ip = "192.168.75.1" # IP Gateway
+g_mac = "00:50:56:F6:D3:5A" # MAC Gateway
+t_mac = "00:0C:29:14:84:48" # MAC Target
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
