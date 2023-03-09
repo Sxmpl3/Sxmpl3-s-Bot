@@ -19,12 +19,12 @@ logger = logging.getLogger(__name__)
 
 def start(update, context):
 
-    update.message.reply_text('Hola, usa /help para ver los comandos disponibles')
+    update.message.reply_text('Hola pringao, usa /help para ver los comandos disponibles')
 
 
 def help(update, context):
 
-    update.message.reply_text('Use /attack para realizar ARP Spoofing y DoS')
+    update.message.reply_text('Usa /attack para realizar ARP Spoofing y DoS')
 
 def target_ip(update, context):
 
